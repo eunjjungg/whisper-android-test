@@ -15,7 +15,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.whispercppdemo.media.decodeWaveFile
 import com.whispercppdemo.recorder.Recorder
-import com.whispercpp.whisper.WhisperContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -91,7 +90,7 @@ class MainScreenViewModel(private val application: Application) : ViewModel() {
     }
 
     fun transcribeSample() = viewModelScope.launch {
-        transcribeAudio(getFirstSample())
+        transcribeAudio(getSample())
     }
 
     private suspend fun runBenchmark(nthreads: Int) {
@@ -109,8 +108,20 @@ class MainScreenViewModel(private val application: Application) : ViewModel() {
         canTranscribe = true
     }
 
-    private suspend fun getFirstSample(): File = withContext(Dispatchers.IO) {
-        samplesPath.listFiles()!!.first()
+    private suspend fun getSample(): File = withContext(Dispatchers.IO) {
+        /*
+        1. samples_jfk.wav,
+        2. earth_and_moon.wav - 지구의 일부가 날아가서 달이 되었다는 거예요.
+        3. broadcast_00033005.wav - 그다음에 자/ 거기 보면 양 집사라고 하는 아이들이 갖고 있는 친구가 있어요. 이 양+ 양 집사는 뭘 줄인 거예요 고양이 집사 그래서 고양이를 키우는 사람을 이르는 말이잖아요. 이것.
+        4. broadcast_00033001.wav - 자/ 누리 (소통방에서)/(소통망에서) 본 내용 가운데 가상 공간에서 사용하는 언어의 특징이 나타난 부분을 찾아보자 이렇게 나와 있어요.
+        5. broadcast_00033002.wav - 자/ 지금 여러 명이 이거 채팅인가요 채팅을 하고 있는데요.
+        6. broadcast_00033003.wav, - 자/ (백설공주)/(백살공주) 님이 네. 쓰는 말을 보면 줄임말을 굉장히 많이 사용하고 있죠.
+        7. broadcast_00033004.wav, 귀요미 왜요 막/ 이거 문제의식조차 없는 경우가 많아요 지금 친구들 그다음에 심쿵. // There are many cases where you have a problem with your cuteness. Next, heart attack!
+        8. broadcast_00033030.wav,
+        9. broadcast_00033059.wav - 자/ 이렇게 해서요. 우리가 미래엔 교과서로 서른여섯 시간 동안에 수다 떤 것이 모두 끝났습니다. 네 여러분은 어떠셨나요 저는 되게 행복했는데.
+         */
+
+        samplesPath.listFiles().get(6)
     }
 
     private suspend fun readAudioSamples(file: File): FloatArray = withContext(Dispatchers.IO) {

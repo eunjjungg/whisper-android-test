@@ -176,7 +176,7 @@ Java_com_whispercpp_whisper_WhisperLib_00024Companion_fullTranscribe(
     params.print_timestamps = true;
     params.print_special = false;
     params.translate = false;
-    params.language = "en";
+    params.language = "ko"; // 인식 언어
     params.n_threads = num_threads;
     params.offset_ms = 0;
     params.no_context = true;
